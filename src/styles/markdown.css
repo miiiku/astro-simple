@@ -1,6 +1,7 @@
 .md-content {
   line-height: 1.9;
   word-wrap: break-word;
+  @apply theme-text-normal;
 }
 
 .md-content > :first-child {

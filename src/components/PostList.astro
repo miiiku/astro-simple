@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Datetime from "@/components/Datetime.astro";
+import CalendarIcon from "@components/icons/calendar.astro";
+
+interface Props {
+  posts: Array<CollectionEntry<"blog">>;
+}
+
+const { posts } = Astro.props;
+---
+
+
+<ul>
+  {posts.map((post) => {
+    return (
+      <li class="py-2 mb-5 last:mb-0">
+        <article>
+          <a class="inline-block text-xl break-all layout-a" href={`/blog/${post.slug}`}>{post.data.title}</a>
+          <div class="flex gap-2 items-center theme-text-minor text-sm my-2">
+            <div class="w-5 h-5"><CalendarIcon width="100%" height="100%" /></div>
+            <Datetime datetime={post.data.publishDate} />
+          </div>
+          { post.data.description && <div class="theme-text-normal">{post.data.description}</div> }
+        </article>
+      </li>
+    )
+  })}
+</ul>

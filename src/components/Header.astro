@@ -28,7 +28,7 @@ const { pathname } = Astro.url
           <button id="desktop-search--btn" class="w-9 h-9 p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="search"><SearchIcon width="100%" height="100%" /></button>
         </li>
         <li class="overflow-hidden">
-          <div id="desktop-theme--block" class="w-9 h-9 transition-transform">
+          <div id="desktop-theme--block" class="w-9 h-9">
             <button id="desktop-theme-dark--btn" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
             <button id="desktop-theme-light--btn" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
           </div>
@@ -47,7 +47,7 @@ const { pathname } = Astro.url
         <SearchIcon width="100%" height="100%" title="search" />
       </button>
       <div class="overflow-hidden">
-        <div id="mobile-theme--block" class="w-9 h-9 transition-transform">
+        <div id="mobile-theme--block" class="w-9 h-9">
           <button id="mobile-theme-dark--btn" class="w-full h-full p-2 rounded-md border theme-border hover:theme-text-hover active:bg-zinc-100" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
           <button id="mobile-theme-light--btn" class="w-full h-full p-2 rounded-md border theme-border hover:theme-text-hover active:bg-zinc-100" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
         </div>
@@ -104,14 +104,10 @@ const { pathname } = Astro.url
       rootDom.classList.add("light")
     }
     if (desktopThemeBlock) {
-      gsap.to("#desktop-theme--block", {
-        duration: 0.3,
-        ease: "elastic",
-        y: `-${translateY[theme] * 100}%`,
-      })
+      gsap.to("#desktop-theme--block", { duration: 1, ease: "elastic.out(1, 0.3)", yPercent: -(translateY[theme] * 100) });
     }
     if (mobileThemeBlock) {
-      mobileThemeBlock.style.transform = `translateY(-${translateY[theme] * 100}%)`;
+      gsap.to("#mobile-theme--block", { duration: 1, ease: "elastic.out(1, 0.3)", yPercent: -(translateY[theme] * 100) });
     }
     window.localStorage.setItem("theme", theme);
   }

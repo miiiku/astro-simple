@@ -6,6 +6,10 @@
   @apply mx-auto w-full px-5 max-w-[760px];
 }
 
+.layout-a {
+  @apply hover:theme-text-hover hover:underline decoration-dashed decoration-2 underline-offset-4 font-bold theme-text-stress;
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

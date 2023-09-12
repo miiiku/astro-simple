@@ -7,8 +7,12 @@ const tags = [...new Set(posts.map((post) => post.data?.tags || []).flat())];
 ---
 
 
-<BaseLayout title="tags">
+<BaseLayout title="Tags">
+  <h1 class="font-bold text-3xl theme-text-stress">Tags</h1>
+
+  <p class="mt-4 mb-6 theme-text-minor">共有{tags.length}个Tag</p>
+
   <div class="flex flex-wrap gap-4">
-    {tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}
+    {tags.map((tag) => <a class="layout-a" href={`/tags/${tag}`}># {tag}</a>)}
   </div>
 </BaseLayout>
