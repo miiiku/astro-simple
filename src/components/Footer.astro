@@ -1,0 +1,28 @@
+---
+import { BEIAN, COPYRIGHT } from "../consts"
+---
+
+<footer>
+  <div class="layout-wrap">
+    <div class="theme-border border-t py-6">
+      {
+        COPYRIGHT && (
+          <p class="my-2 theme-text-normal">{ COPYRIGHT }</p>
+        )
+      }
+      {
+        BEIAN && (
+          <p class="my-2 theme-text-normal">
+            <a class="font-bold theme-text-stress hover:theme-text-hover" href="https://beian.miit.gov.cn" target="_blank">{ BEIAN }</a>
+          </p>
+        )
+      }
+      <p class="my-2 theme-text-normal">
+        Powered by
+        <a class="font-bold theme-text-stress mx-1 hover:theme-text-hover" href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a>
+        Theme - 
+        <a class="font-bold theme-text-stress mx-1 hover:theme-text-hover" href="https://github.com/miiiku/hugo-theme-kagome" target="_blank" rel="noopener noreferrer author">kagome</a>
+      </p>
+    </div>
+  </div>
+</footer>

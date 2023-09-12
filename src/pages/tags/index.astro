@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const posts = await getCollection("blog");
+const tags = [...new Set(posts.map((post) => post.data?.tags || []).flat())];
+---
+
+
+<BaseLayout title="tags">
+  <div class="flex flex-wrap gap-4">
+    {tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}
+  </div>
+</BaseLayout>

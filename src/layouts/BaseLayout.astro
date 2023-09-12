@@ -1,0 +1,25 @@
+---
+interface Props {
+  title?: string
+  keywords?: Array<string>
+  description?: string
+}
+import { LOCALE } from "@/consts";
+import BaseHead from "@/components/Head.astro"
+import BaseHeader from "@/components/Header.astro"
+import BaseFooter from "@/components/Footer.astro"
+import "@styles/style.css"
+
+const { title, keywords, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang={LOCALE}>
+  <BaseHead title={title} keywords={keywords} description={description} />
+<body class="theme-bg">
+  <BaseHeader />
+  <main class="mx-auto w-full py-12 px-5 max-w-[760px]">
+    <slot />
+  </main>
+  <BaseFooter />
+</body>
+</html>

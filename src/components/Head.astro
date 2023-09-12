@@ -1,0 +1,44 @@
+---
+interface Props {
+  title?: string
+  keywords?: Array<string>
+  description?: string
+}
+
+import { SITE_TITLE, SITE_KEYWORDS, SITE_DESCRIPTION, AUTHOR_NAME } from '../consts';
+
+const { title, keywords, description } = Astro.props;
+
+const showTitle = title ? `${title} - ${SITE_TITLE}` : SITE_TITLE;
+
+const showKeywords = keywords ? keywords.join(",") : SITE_KEYWORDS.join(",");
+
+const showDescription = description || SITE_DESCRIPTION;
+---
+
+<head>
+  <!-- Global Metadata -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="antler">
+  <meta name="generator" content={Astro.generator} />
+  <title>{showTitle}</title>
+  <meta name="author" content={AUTHOR_NAME}>
+  <meta name="title" content={showTitle} />
+  <meta name="keywords" content={showKeywords}>
+  <meta name="description" content={showDescription}>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={Astro.url} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={showDescription} />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content={Astro.url} />
+  <meta property="twitter:title" content={title} />
+  <meta property="twitter:description" content={showDescription} />
+</head>

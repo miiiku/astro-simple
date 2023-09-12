@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const { post } = Astro.props;
+
+const { title, keywords, description, tags } = post.data;
+
+const { Content } = await post.render();
+---
+
+<BaseLayout title={title} keywords={keywords} description={description}>
+  <div class="flex flex-wrap gap-4 py-4">
+    {tags?.map((tag:string) => <a class="px-2 py-1 rounded-md text-sm border theme-border theme-text-minor hover:theme-text-hover" href={`/tags/${tag}`}># {tag}</a>)}
+  </div>
+
+  <div class="md-content">
+    <Content />
+  </div>
+  
+</BaseLayout>

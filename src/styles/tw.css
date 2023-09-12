@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.layout-wrap {
+  @apply mx-auto w-full px-5 max-w-[760px];
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/** 编写在components中的class可以配合tailwind修饰符一起使用，如`hover:`, `focus:`, `md:`等 */
+@layer components {
+  .theme-bg {
+    background-color: var(--theme-bg);
+  }
+
+  .theme-text-stress {
+    color: var(--theme-text-stress);
+  }
+
+  .theme-text-normal {
+    color: var(--theme-text-normal);
+  }
+
+  .theme-text-minor {
+    color: var(--theme-text-minor);
+  }
+
+  .theme-text-hover {
+    @apply text-[var(--theme-text-hover)];
+  }
+
+  .theme-border {
+    @apply border-[var(--theme-border)];
+  }
+}
