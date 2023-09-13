@@ -21,7 +21,7 @@ const { pathname } = Astro.url
     </a>
 
     <nav>
-      <button id="mobile-menu--btn" class="mobile:block hidden w-9 h-9 p-2 rounded-md border theme-border theme-text-stress hover:theme-text-hover active:bg-zinc-100"><MenuIcon width="100%" height="100%" /></button>
+      <!-- <button id="mobile-menu--btn" class="mobile:block hidden w-9 h-9 p-2 rounded-md border theme-border theme-text-stress hover:theme-text-hover active:bg-zinc-100"><MenuIcon width="100%" height="100%" /></button> -->
       <ul class="mobile:hidden flex gap-5 items-center justify-between theme-text-stress">
         { SITE_MENU.map(menu => <li><a class={`font-bold hover:theme-text-hover px-2 py-1 ${ menu.url === pathname ? "underline decoration-wavy decoration-2 underline-offset-4" : "" }`} href={menu.url}>{menu.title}</a></li>) }
         <li>
@@ -114,7 +114,7 @@ const { pathname } = Astro.url
 
   switchTheme(theme);
 
-  document.querySelector("#mobile-menu--btn")?.addEventListener("click", toggleMobileMenu);
+  // document.querySelector("#mobile-menu--btn")?.addEventListener("click", toggleMobileMenu);
 
   document.querySelector("#desktop-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
   document.querySelector("#desktop-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
