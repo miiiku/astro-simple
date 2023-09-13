@@ -14,9 +14,9 @@ export const getSortedPosts = async (): Promise<Array<CollectionEntry<"blog">>> 
 }
 
 /**
- * 根据时间生成文章统一slug地址
+ * 根据文章时间生成永久链接
  */
-export const formatTimeToSlug = (date: string | Date): string => {
+export const generatePermalink = (date: string | Date): string => {
   const d = new Date(date);
   const year = d.getFullYear();
   const month = add0(d.getMonth() + 1);

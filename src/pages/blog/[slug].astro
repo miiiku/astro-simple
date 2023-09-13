@@ -1,16 +1,17 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import PostLayout from "@layouts/PostLayout.astro";
+import { getSortedPosts, generatePermalink } from "@utils/index";
 
 interface Props {
   post: CollectionEntry<"blog">;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const posts = await getSortedPosts();
   return posts.map((post) => {
     return {
-      params: { slug: post.slug },
+      params: { slug: generatePermalink(post.data.publishDate) },
       props: { post },
     }
   });
