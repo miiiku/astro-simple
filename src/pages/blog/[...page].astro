@@ -1,0 +1,26 @@
+---
+import { PAGINATE_SIZE } from "@/consts";
+import { getSortedPosts } from "@utils/index";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostList from "@/components/PostList.astro";
+import Pagination from "@/components/Pagination.astro";
+
+// https://docs.astro.build/zh-cn/reference/api-reference/#paginate
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getSortedPosts();
+  return paginate(posts, { pageSize: PAGINATE_SIZE });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title={`page:${page.currentPage}`}>
+  <h1 class="font-bold text-3xl theme-text-stress">Blog</h1>
+
+  <p class="mt-4 mb-6 theme-text-minor">当前处于第{page.currentPage}页，共{page.lastPage}页</p>
+
+  <PostList posts={page.data} />
+
+  <Pagination page={page} />
+</BaseLayout>

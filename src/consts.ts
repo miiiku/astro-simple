@@ -20,7 +20,7 @@ export const SITE_MENU = [
 export const LOCALE = "zh-CN";
 
 /** 分页大小 */
-export const PAGINATE_SIZE = 6;
+export const PAGINATE_SIZE = 3;
 
 /** 百度统计 */
 export const ANALYTICS_BAIDU =  "77cce6624f1114785af5e77d00cbf93c";

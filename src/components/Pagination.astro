@@ -1,0 +1,26 @@
+---
+interface Props {
+  page: any;
+}
+import PagePrevIcon from "@components/icons/pagePrev.astro";
+import PageNextIcon from "@components/icons/pageNext.astro";
+
+const { page } = Astro.props
+---
+
+<div class="py-4">
+  <nav class="flex my-20 items-center justify-center gap-8">
+    {page.url && page.url.prev && (
+      <a class="flex gap-1 items-center px-4 py-2 theme-text-normal rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" href={page.url.prev} aria-label="Prev">
+        <PagePrevIcon class="w-6 h-6" />
+        <span>跳到第 {page.currentPage - 1} 页</span>
+      </a>
+    )}
+    {page.url && page.url.next && (
+      <a class="flex gap-1 items-center px-4 py-2 theme-text-normal rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" href={page.url.next} aria-label="Next">
+        <span>下一页</span>
+        <PageNextIcon class="w-6 h-6" />
+      </a>
+    )}
+  </nav>
+</div>
