@@ -1,7 +1,6 @@
 ---
 const { width = "48px", height = "48px" } = Astro.props;
 ---
-<div id="test">adfasdf</div>
 <svg id="menu-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width={width} height={height} viewBox="0 0 24 24">
   <line id="menu-line-1" x1="2" x2="22" y1="6" y2="6" stroke-dasharray="20" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" stroke="currentColor" stroke-width="2"></line>
   <line id="menu-line-2" x1="2" x2="22" y1="12" y2="12" stroke-dasharray="20" stroke-dashoffset="-6" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" stroke="currentColor" stroke-width="2"></line>
@@ -11,21 +10,26 @@ const { width = "48px", height = "48px" } = Astro.props;
 <script>
   import gsap from "gsap";
 
-  document.querySelector("#menu-svg")?.addEventListener("click", toggleMenu)
-  document.querySelector("#test")?.addEventListener("click", aa)
+  document.querySelector("#menu-svg")?.addEventListener("click", function () {
+    this.classList.toggle("open");
+    if(this.classList.contains("open")) {
+      runAnimation();
+    } else {
+      runReverse();
+    }
+  });
 
   let tween1:any = null;
   let tween2:any = null;
   let tween3:any = null;
 
-  function aa() {
+  function runReverse() {
     tween1.reverse();
     tween2.reverse();
     tween3.reverse();
   }
 
-  function toggleMenu() {
-
+  function runAnimation() {
     tween1 = gsap.to("#menu-line-1", {
       rotation: -45,
       y: 6,
