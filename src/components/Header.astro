@@ -3,8 +3,7 @@ import { SITE_TITLE, SITE_MENU } from "../consts"
 
 import LogoIcon from "./icons/logo.astro"
 import SearchIcon from "./icons/search.astro"
-import MenuIcon from "./icons/menu.astro"
-import AnimIcon from "./icons/anim.astro"
+import MenuCloseAnimIcon from "./icons/MenuCloseAnimIcon.astro"
 
 import DarkThemeIcon from "./icons/themeDark.astro"
 import LightThemeIcon from "./icons/themeLight.astro"
@@ -23,8 +22,7 @@ const { pathname } = Astro.url
 
     <nav>
       <button id="mobile-menu--btn" class="mobile:block hidden w-9 h-9 p-2 rounded-md border theme-border theme-text-stress hover:theme-text-hover active:bg-zinc-100">
-        <!-- <MenuIcon width="100%" height="100%" /> -->
-        <AnimIcon width="100%" height="100%" />
+        <MenuCloseAnimIcon key="mobile-menu--icon" width="100%" height="100%" />
       </button>
       <ul class="mobile:hidden flex gap-5 items-center justify-between theme-text-stress">
         { SITE_MENU.map(menu => <li><a class={`font-bold hover:theme-text-hover px-2 py-1 ${ menu.url === pathname ? "underline decoration-wavy decoration-2 underline-offset-4" : "" }`} href={menu.url}>{menu.title}</a></li>) }
@@ -71,7 +69,6 @@ const { pathname } = Astro.url
 
 <script>
   import gsap from "gsap";
-
   const desktopThemeBlock = document.querySelector("#desktop-theme--block") as HTMLDivElement;
   const mobileThemeBlock = document.querySelector("#mobile-theme--block") as HTMLDivElement;
   const mobileMenuPanel = document.querySelector("#mobile-menu--panel");
@@ -97,6 +94,9 @@ const { pathname } = Astro.url
     if (mobileMenuPanel?.classList.contains("open")) {
       mobileMenuLinkTween.restart();
       mobileMenuBtnTween.restart();
+      document.querySelector("[key=mobile-menu--icon]")?.setAttribute("active", "");
+    } else {
+      document.querySelector("[key=mobile-menu--icon]")?.removeAttribute("active");
     }
   }
 

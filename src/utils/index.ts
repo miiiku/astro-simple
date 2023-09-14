@@ -1,9 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
-export const add0 = (number: number | string) => {
-  return Number(number) > 9 ? number.toString() : `0${number}`;
-}
-
 /**
  * 获取不是草稿的帖子并排序返回
  */
@@ -19,10 +15,10 @@ export const getSortedPosts = async (): Promise<Array<CollectionEntry<"blog">>> 
 export const generatePermalink = (date: string | Date): string => {
   const d = new Date(date);
   const year = d.getFullYear();
-  const month = add0(d.getMonth() + 1);
-  const day = add0(d.getDate());
-  const hh = add0(d.getHours());
-  const mm = add0(d.getMinutes());
-  const ss = add0(d.getSeconds());
+  const month = (d.getMonth() + 1).toString().padStart(2, "0");
+  const day = (d.getDate()).toString().padStart(2, "0");
+  const hh = (d.getHours()).toString().padStart(2, "0");
+  const mm = (d.getMinutes()).toString().padStart(2, "0");
+  const ss = (d.getSeconds()).toString().padStart(2, "0");
   return `${year}${month}${day}${hh}${mm}${ss}`;
 }
