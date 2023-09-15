@@ -31,9 +31,6 @@ export const ANALYTICS_GOOGLE = "G-GS74WZSLFF";
 /** 备案信息 */
 export const BEIAN = "蜀ICP备15014309号";
 
-/** 版权信息 */
-export const COPYRIGHT = "© 2023 Antler.";
-
 /** 作者姓名 */
 export const AUTHOR_NAME = "Antler";
 

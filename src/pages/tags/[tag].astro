@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
+import Overview from "@/components/Overview.astro";
 
 interface Props {
   posts: Array<CollectionEntry<"blog">>;
@@ -25,9 +26,7 @@ const { posts } = Astro.props;
 ---
 
 <BaseLayout title={`tag:${tag}`}>
-  <h1 class="font-bold text-3xl theme-text-stress"># {tag}</h1>
-
-  <p class="mt-4 mb-6 theme-text-minor">Posts tagged with <strong>{tag}</strong></p>
+  <Overview title={`# ${tag}`} describe={`Posts tagged with #{${tag}}`} />
 
   <PostList posts={posts} />
 </BaseLayout>

@@ -1,15 +1,10 @@
 ---
-import { BEIAN, COPYRIGHT } from "../consts"
+import { BEIAN } from "../consts"
 ---
 
 <footer>
   <div class="layout-wrap">
     <div class="theme-border border-t py-6">
-      {
-        COPYRIGHT && (
-          <p class="my-2 theme-text-normal">{ COPYRIGHT }</p>
-        )
-      }
       {
         BEIAN && (
           <p class="my-2 theme-text-normal">
@@ -19,9 +14,9 @@ import { BEIAN, COPYRIGHT } from "../consts"
       }
       <p class="my-2 theme-text-normal">
         Powered by
-        <a class="layout-a mx-1" href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a>
+        <a class="layout-a mx-1" href="https://astro.build/" target="_blank" rel="noopener noreferrer">Astro</a>
         Theme - 
-        <a class="layout-a mx-1" href="https://github.com/miiiku/hugo-theme-kagome" target="_blank" rel="noopener noreferrer author">kagome</a>
+        <a class="layout-a mx-1" href="https://github.com/miiiku/astro-simple" target="_blank" rel="noopener noreferrer author">Astro Simple</a>
       </p>
     </div>
   </div>

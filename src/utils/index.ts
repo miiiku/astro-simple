@@ -4,7 +4,9 @@ import { getCollection, type CollectionEntry } from "astro:content";
  * 获取不是草稿的帖子并排序返回
  */
 export const getSortedPosts = async (): Promise<Array<CollectionEntry<"blog">>> => {
-  return (await getCollection("blog", ({ data }) => !data.draft)).sort((a, b) => {
+  return (await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  })).sort((a, b) => {
     return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
   });
 }

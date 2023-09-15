@@ -3,11 +3,13 @@ import { LOCALE } from "@/consts";
 
 interface Props {
   datetime: string | Date;
+  simple?: boolean;
 }
 
-const { datetime } = Astro.props;
+const { datetime, simple } = Astro.props;
 
 const dt = new Date(datetime);
+
 
 const date = dt.toLocaleDateString(LOCALE, {
   year: "numeric",
@@ -20,6 +22,8 @@ const time = dt.toLocaleTimeString(LOCALE, {
   hour: "2-digit",
   minute: "2-digit",
 });
+
+const simpleDate = dt.toLocaleDateString(LOCALE);
 ---
 
-<time>{date} | {time}</time>
+<time>{ simple ? simpleDate : `${date} | ${time}` }</time>

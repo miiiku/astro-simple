@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string,
+  describe: string,
+}
+
+const { title, describe } = Astro.props;
+const strs = describe.split(/#{\w+}/g);
+const vars = (describe.match(/#{\w+}/g) || []).map((str:string) => {
+  return str.replace(/#{(\w+)}/, (match, p1) => p1);
+});
+---
+<h1 class="font-bold text-3xl theme-text-stress uppercase">{title}</h1>
+
+<p class="mt-4 mb-6 theme-text-minor">
+  {
+    (vars && vars.length) ? strs.map((str:string, index:number) => {
+      return [str, <strong>&nbsp;&nbsp;{vars[index]}&nbsp;&nbsp;</strong>]
+    }) : strs[0]
+  }
+</p>

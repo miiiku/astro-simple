@@ -17,7 +17,7 @@ const { posts } = Astro.props;
     return (
       <li class="py-2 mb-5 last:mb-0">
         <article>
-          <a class="inline-block text-xl break-all layout-a" href={`/blog/${generatePermalink(post.data.publishDate)}`}>{post.data.title}</a>
+          <a class="block text-xl break-all break-words layout-a" href={`/blog/${generatePermalink(post.data.publishDate)}`}>{post.data.title}</a>
           <div class="flex gap-2 items-center theme-text-minor text-sm my-2">
             <div class="w-5 h-5"><CalendarIcon width="100%" height="100%" /></div>
             <Datetime datetime={post.data.publishDate} />

@@ -1,9 +1,26 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import Datetime from "@/components/Datetime.astro";
+import { getSortedPosts, generatePermalink } from "@utils/index";
+import Overview from "@/components/Overview.astro";
+
+const posts = (await getSortedPosts());
 ---
 
-<BaseLayout title="ARCHIVES">
-	<h1 class="text-4xl font-bold flex gap-2 items-center text-red-200">
-    ARCHIVES
-	</h1>
+<BaseLayout title="Archives">
+	<Overview title="archives" describe={`共计#{${posts.length}}篇文章`} />
+
+	<table class="w-full table-auto">
+		<tbody>
+			{posts && posts.length && posts.map((post) => (
+				<tr>
+					<td class="py-2 theme-text-minor italic whitespace-nowrap">
+						<div class="desktop:block hidden"><Datetime datetime={post.data.publishDate} /></div>
+						<div class="mobile:block hidden"><Datetime simple={true} datetime={post.data.publishDate} /></div>
+					</td>
+					<td class="px-4 py-2"><a class="block layout-a break-all break-words" href={`/blog/${generatePermalink(post.data.publishDate)}`}>{post.data.title}</a></td>
+				</tr>
+			))}
+		</tbody>
+	</table>
 </BaseLayout>

@@ -9,7 +9,7 @@ const { page } = Astro.props
 ---
 
 <div class="py-4">
-  <nav class="flex my-20 items-center justify-center gap-8">
+  <nav class="flex my-8 items-center justify-center gap-8">
     {page.url && page.url.prev && (
       <a class="flex gap-1 items-center px-4 py-2 theme-text-normal rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" href={page.url.prev} aria-label="Prev">
         <PagePrevIcon class="w-6 h-6" />
