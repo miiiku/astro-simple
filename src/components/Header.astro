@@ -31,10 +31,7 @@ const { pathname } = Astro.url
           <button id="desktop-search--btn" class="w-9 h-9 p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="search"><SearchIcon width="100%" height="100%" /></button>
         </li>
         <li class="overflow-hidden">
-          <div id="desktop-theme--block" class="w-9 h-9">
-            <button id="desktop-theme-dark--btn" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
-            <button id="desktop-theme-light--btn" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
-          </div>
+          <CustomThemeAnim id="desktop-theme--btn" mode="desktop" class="block w-9 h-9" />
         </li>
         <li>
           <button id="desktop-theme-auto--btn" class="w-9 h-9 p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="auto theme"><SystemThemeIcon width="100%" height="100%" /></button>
@@ -50,10 +47,7 @@ const { pathname } = Astro.url
         <SearchIcon width="100%" height="100%" title="search" />
       </button>
       <div class="overflow-hidden mobile-menu--btn opacity-0 scale-50">
-        <div id="mobile-theme--block" class="w-9 h-9">
-          <button id="mobile-theme-dark--btn" class="w-full h-full p-2 rounded-md border theme-border hover:theme-text-hover active:bg-zinc-100" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
-          <button id="mobile-theme-light--btn" class="w-full h-full p-2 rounded-md border theme-border hover:theme-text-hover active:bg-zinc-100" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
-        </div>
+        <CustomThemeAnim id="mobile-theme--btn" mode="mobile" class="block w-9 h-9" />
       </div>
       <button id="mobile-theme-auto--btn" class="mobile-menu--btn w-9 h-9 opacity-0 scale-50 p-2 rounded-md border theme-border hover:theme-text-hover active:bg-zinc-100">
         <SystemThemeIcon width="100%" height="100%" title="auto theme" />
@@ -69,11 +63,11 @@ const { pathname } = Astro.url
 </style>
 
 <script>
+  // todo 切换页面后，移动端菜单无法正常工作，系统主题按钮点击无法正常播放切换动画
   import gsap from "gsap";
-
-  const desktopThemeBlock = document.querySelector("#desktop-theme--block") as HTMLDivElement;
-  const mobileThemeBlock = document.querySelector("#mobile-theme--block") as HTMLDivElement;
   const mobileMenuPanel = document.querySelector("#mobile-menu--panel");
+  const desktopThemeBtn: any = document.querySelector("#desktop-theme--btn");
+  const mobileThemeBtn: any = document.querySelector("#mobile-theme--btn");
 
   let mobileMenuLinkTween = gsap.to(".mobile-menu-link", {
     x: 0,
@@ -90,6 +84,7 @@ const { pathname } = Astro.url
   }).pause();
 
   const toggleMobileMenu = () => {
+    console.log("----")
     mobileMenuPanel?.classList.toggle("open");
     if (mobileMenuPanel?.classList.contains("open")) {
       mobileMenuLinkTween.restart();
@@ -100,55 +95,16 @@ const { pathname } = Astro.url
     }
   }
 
-  const switchTheme = (theme: "auto" | "dark" | "light") => {
-    const rootDom = document.documentElement;
-    const translateY = {
-      "dark": 1,
-      "light": 0,
-      "auto": (() => {
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 1;
-        }
-        return 0;
-      })(),
-    }
-    
-    if (theme === "auto") {
-      rootDom.classList.remove("dark")
-      rootDom.classList.remove("light")
-    }
-    if (theme === "dark") {
-      rootDom.classList.remove("light")
-      rootDom.classList.add("dark")
-    }
-    if (theme === "light") {
-      rootDom.classList.remove("dark")
-      rootDom.classList.add("light")
-    }
-    if (desktopThemeBlock) {
-      gsap.to("#desktop-theme--block", { duration: 1, ease: "elastic.out(1, 0.3)", yPercent: -(translateY[theme] * 100) });
-    }
-    if (mobileThemeBlock) {
-      gsap.to("#mobile-theme--block", { duration: 1, ease: "elastic.out(1, 0.3)", yPercent: -(translateY[theme] * 100) });
-    }
-    window.localStorage.setItem("theme", theme);
+  const clearTheme = () => {
+    desktopThemeBtn && desktopThemeBtn.clearTheme();
+    mobileThemeBtn && mobileThemeBtn.clearTheme();
   }
-
-  const initTheme = () => {
-    const theme = (window.localStorage.getItem("theme") || "auto") as "auto" | "dark" | "light";
-    switchTheme(theme);
-  }
-
-  document.addEventListener("DOMContentLoaded", initTheme);
-  document.addEventListener("astro:after-swap", initTheme);
 
   document.addEventListener("astro:page-load", () => {
+    /** 移动端切换菜单 */
     document.querySelector("#mobile-menu--btn")?.addEventListener("click", toggleMobileMenu);
-    document.querySelector("#desktop-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
-    document.querySelector("#desktop-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
-    document.querySelector("#desktop-theme-light--btn")?.addEventListener("click", () => switchTheme("light"));
-    document.querySelector("#mobile-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
-    document.querySelector("#mobile-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
-    document.querySelector("#mobile-theme-light--btn")?.addEventListener("click", () => switchTheme("light"));
+    /** 选中系统主题后清空主题按钮当前选中状态 */
+    document.querySelector("#desktop-theme-auto--btn")?.addEventListener("click", clearTheme)
+    document.querySelector("#mobile-theme-auto--btn")?.addEventListener("click", clearTheme)
   });
 </script>

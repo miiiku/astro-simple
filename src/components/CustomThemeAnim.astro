@@ -1,69 +1,97 @@
 ---
 import DarkThemeIcon from "./icons/themeDark.astro"
 import LightThemeIcon from "./icons/themeLight.astro"
+
+const { mode = "desktop" } = Astro.props;
 ---
 
 <custom-theme-anim { ...{ ...Astro.props } }>
-  <div class="theme-block" class="w-9 h-9">
-    <button class="theme-dark" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
-    <button class="theme-light" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
+  <div class="theme-block w-full h-full" data-mode={ mode }>
+    <button class="theme-dark theme-btn" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
+    <button class="theme-light theme-btn" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
   </div>
 </custom-theme-anim>
 
 <script>
   import gsap from "gsap";
 
-  const mo = new MutationObserver(([ mutation ]) => {
-    if (mutation.attributeName === "theme") {
-      const target = mutation.target as CustomThemeAnim;
-      const theme = target.getAttribute("theme") || "auto";
-      target.switchTheme(theme);
-    }
-  });
+  type ThemeEnum = "auto" | "dark" | "light";
 
   class CustomThemeAnim extends HTMLElement {
-    theme: string;
     duration: number;
     initialized: boolean;
 
     constructor() {
       super();
 
-      this.theme = "";
-
       this.duration = 0.5;
 
       this.initialized = false;
 
-      mo.observe(this, { attributes: true });
+      this.addEventListener("click", () => this.toggleTheme());
+
+      const ct = this.currentTheme();
+      document.addEventListener("DOMContentLoaded", () => this.switchTheme(ct));
+      document.addEventListener("astro:after-swap", () => this.switchTheme(ct));
     }
 
-    switchTheme (theme: string) {
+    systemTheme () {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return {
+          y: 1,
+          nextTheme: "light",
+        }
+      }
+      return {
+        y: 0,
+        nextTheme: "dark",
+      }
+    }
+
+    currentTheme () {
+      return (window.localStorage.getItem("theme") || "auto") as ThemeEnum;
+    }
+
+    toggleTheme () {
+      const { nextTheme } = this.systemTheme();
+      switch (this.currentTheme()) {
+        case "dark":
+          this.switchTheme("light");
+          break;
+        case "light":
+          this.switchTheme("dark");
+          break;
+        default:
+          this.switchTheme(nextTheme as ThemeEnum);
+          break;
+      }
+    }
+
+    switchTheme (theme: ThemeEnum) {
+      const { y } = this.systemTheme();
+      
       const rootDom = document.documentElement;
+
       const translateY: Record<string, number> = {
+        "auto": y,
         "dark": 1,
         "light": 0,
-        "auto": (() => {
-          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 1;
-          }
-          return 0;
-        })(),
       };
 
-      if (theme === "auto") {
-        rootDom.classList.remove("dark")
-        rootDom.classList.remove("light")
-      }
-
-      if (theme === "dark") {
-        rootDom.classList.remove("light")
-        rootDom.classList.add("dark")
-      }
-
-      if (theme === "light") {
-        rootDom.classList.remove("dark")
-        rootDom.classList.add("light")
+      switch (theme) {
+        case "dark":
+            rootDom.classList.remove("light")
+            rootDom.classList.add("dark")
+          break;
+        case "light":
+            rootDom.classList.remove("dark")
+            rootDom.classList.add("light")
+          break;
+        default:
+            theme = "auto";
+            rootDom.classList.remove("dark")
+            rootDom.classList.remove("light")
+          break;
       }
 
       if (this.initialized) {
@@ -80,10 +108,26 @@ import LightThemeIcon from "./icons/themeLight.astro"
       }
 
       this.theme = theme;
-
+      this.setAttribute("theme", theme);
       window.localStorage.setItem("theme", theme);
+    }
+
+    clearTheme () {
+      this.switchTheme("auto");
     }
   }
 
   customElements.define("custom-theme-anim", CustomThemeAnim);
 </script>
+
+<style>
+  .theme-block[data-mode="mobile"] :where(.theme-btn) {
+    @apply theme-border;
+  }
+  .theme-block[data-mode="desktop"] :where(.theme-btn) {
+    @apply border-transparent hover:theme-border;
+  }
+  .theme-btn {
+    @apply w-full h-full p-2 rounded-md border hover:theme-text-hover active:bg-zinc-100;
+  }
+</style>
