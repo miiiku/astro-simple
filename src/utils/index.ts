@@ -24,3 +24,7 @@ export const generatePermalink = (date: string | Date): string => {
   const ss = (d.getSeconds()).toString().padStart(2, "0");
   return `${year}${month}${day}${hh}${mm}${ss}`;
 }
+
+export const safeURL = (url: string) => {
+  return encodeURIComponent(url);
+}

@@ -26,4 +26,4 @@ const time = dt.toLocaleTimeString(LOCALE, {
 const simpleDate = dt.toLocaleDateString(LOCALE);
 ---
 
-<time>{ simple ? simpleDate : `${date} | ${time}` }</time>
+<time>{ simple ? simpleDate : `${date} ${time}` }</time>

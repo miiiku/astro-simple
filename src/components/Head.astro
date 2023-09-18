@@ -5,6 +5,8 @@ interface Props {
   description?: string
 }
 
+import { ViewTransitions } from 'astro:transitions';
+
 import { SITE_TITLE, SITE_KEYWORDS, SITE_DESCRIPTION, AUTHOR_NAME } from '../consts';
 
 const { title, keywords, description } = Astro.props;
@@ -41,4 +43,6 @@ const showDescription = description || SITE_DESCRIPTION;
   <meta property="twitter:url" content={Astro.url} />
   <meta property="twitter:title" content={title} />
   <meta property="twitter:description" content={showDescription} />
+
+  <ViewTransitions />
 </head>

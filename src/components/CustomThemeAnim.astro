@@ -1,0 +1,89 @@
+---
+import DarkThemeIcon from "./icons/themeDark.astro"
+import LightThemeIcon from "./icons/themeLight.astro"
+---
+
+<custom-theme-anim { ...{ ...Astro.props } }>
+  <div class="theme-block" class="w-9 h-9">
+    <button class="theme-dark" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
+    <button class="theme-light" class="w-full h-full p-2 rounded-md border border-transparent hover:theme-border hover:theme-text-hover active:bg-zinc-100" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
+  </div>
+</custom-theme-anim>
+
+<script>
+  import gsap from "gsap";
+
+  const mo = new MutationObserver(([ mutation ]) => {
+    if (mutation.attributeName === "theme") {
+      const target = mutation.target as CustomThemeAnim;
+      const theme = target.getAttribute("theme") || "auto";
+      target.switchTheme(theme);
+    }
+  });
+
+  class CustomThemeAnim extends HTMLElement {
+    theme: string;
+    duration: number;
+    initialized: boolean;
+
+    constructor() {
+      super();
+
+      this.theme = "";
+
+      this.duration = 0.5;
+
+      this.initialized = false;
+
+      mo.observe(this, { attributes: true });
+    }
+
+    switchTheme (theme: string) {
+      const rootDom = document.documentElement;
+      const translateY: Record<string, number> = {
+        "dark": 1,
+        "light": 0,
+        "auto": (() => {
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 1;
+          }
+          return 0;
+        })(),
+      };
+
+      if (theme === "auto") {
+        rootDom.classList.remove("dark")
+        rootDom.classList.remove("light")
+      }
+
+      if (theme === "dark") {
+        rootDom.classList.remove("light")
+        rootDom.classList.add("dark")
+      }
+
+      if (theme === "light") {
+        rootDom.classList.remove("dark")
+        rootDom.classList.add("light")
+      }
+
+      if (this.initialized) {
+        gsap.to(this.querySelector(".theme-block"), {
+          duration: 1,
+          ease: "elastic.out(1, 0.3)",
+          yPercent: -(translateY[theme] * 100),
+        });
+      } else {
+        gsap.set(this.querySelector(".theme-block"), {
+          yPercent: -(translateY[theme] * 100),
+        });
+        this.initialized = true;
+      }
+
+      this.theme = theme;
+
+      window.localStorage.setItem("theme", theme);
+    }
+  }
+
+  customElements.define("custom-theme-anim", CustomThemeAnim);
+</script>

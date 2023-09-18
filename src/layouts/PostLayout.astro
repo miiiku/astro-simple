@@ -6,21 +6,36 @@ export interface Props {
 }
 
 import BaseLayout from "@layouts/BaseLayout.astro";
+import Datetime from "@/components/Datetime.astro";
+import CalendarIcon from "@/components/icons/calendar.astro";
+import { generatePermalink } from "@/utils";
 
 const { post } = Astro.props;
 
-const { title, keywords, description, tags } = post.data;
+const { title, keywords, description, tags, publishDate } = post.data;
 
 const { Content } = await post.render();
 ---
 
 <BaseLayout title={title} keywords={keywords} description={description}>
-  <div class="flex flex-wrap gap-4 py-4">
-    {tags?.map((tag:string) => <a class="px-2 py-1 rounded-md text-sm border theme-border theme-text-minor hover:theme-text-hover" href={`/tags/${tag}`}># {tag}</a>)}
-  </div>
+
+  <section class="mb-12">
+    <div class="text-3xl font-bold break-all break-words theme-text-stress" transition:name={`posttitle-${generatePermalink(publishDate)}`}>{title}</div>
+    
+    <div class="flex gap-2 items-center theme-text-minor text-sm my-6" transition:name={`postdate-${generatePermalink(publishDate)}`}>
+      <div class="w-5 h-5"><CalendarIcon width="100%" height="100%" /></div>
+      <Datetime datetime={publishDate} />
+    </div>
+  
+    { description && <div class="theme-text-normal" transition:name={`postdesc-${generatePermalink(publishDate)}`}>{description}</div> }
+  </section>
 
   <div class="md-content">
     <Content />
+  </div>
+
+  <div class="flex flex-wrap gap-4 pt-6">
+    {tags?.map((tag:string) => <a class="px-2 py-1 rounded-md text-sm border theme-border theme-text-minor hover:theme-text-hover" href={`/tags/${tag}`}># {tag}</a>)}
   </div>
   
 </BaseLayout>

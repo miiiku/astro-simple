@@ -15,11 +15,11 @@ const { title, keywords, description } = Astro.props;
 <!DOCTYPE html>
 <html lang={LOCALE}>
   <BaseHead title={title} keywords={keywords} description={description} />
-<body class="theme-bg">
-  <BaseHeader />
-  <main class="mx-auto w-full pt-12 pb-6 px-5 max-w-[760px]">
-    <slot />
-  </main>
-  <BaseFooter />
-</body>
+  <body class="theme-bg">
+    <BaseHeader />
+    <main class="mx-auto w-full pt-12 pb-6 px-5 max-w-[760px]">
+      <slot />
+    </main>
+    <BaseFooter />
+  </body>
 </html>

@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
 import Overview from "@/components/Overview.astro";
+import { safeURL } from "@/utils";
 
 interface Props {
   posts: Array<CollectionEntry<"blog">>;
@@ -26,7 +27,7 @@ const { posts } = Astro.props;
 ---
 
 <BaseLayout title={`tag:${tag}`}>
-  <Overview title={`# ${tag}`} describe={`Posts tagged with #{${tag}}`} />
+  <Overview title={`# ${tag}`} describe={`Posts tagged with #{${tag}}`} tvn={safeURL(`tag-${tag}`)} />
 
   <PostList posts={posts} />
 </BaseLayout>

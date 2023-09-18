@@ -1,9 +1,9 @@
 <menu-close-anim-icon { ...{ ...Astro.props } }>
   <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
     <g stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill="none" stroke="currentColor">
-      <path id="line-t" stroke-dasharray="27,44" stroke-dashoffset="9" d="M2.993761,2.953895c0,0,12.620508,0,18.029297,0C15.614269,8.385034,8.402549,15.626554,2.99376,21.057693" />
-      <path id="line-m" stroke-dasharray="14,14" stroke-dashoffset="0" d="M7.597586,12h13.425473" />
-      <path id="line-b" stroke-dasharray="26,34" stroke-dashoffset="17" d="M11.999999,21.057693h9.02306L2.993761,2.953895" />
+      <path class="line-t" stroke-dasharray="27,44" stroke-dashoffset="9" d="M2.993761,2.953895c0,0,12.620508,0,18.029297,0C15.614269,8.385034,8.402549,15.626554,2.99376,21.057693" />
+      <path class="line-m" stroke-dasharray="14,14" stroke-dashoffset="0" d="M7.597586,12h13.425473" />
+      <path class="line-b" stroke-dasharray="26,34" stroke-dashoffset="17" d="M11.999999,21.057693h9.02306L2.993761,2.953895" />
     </g>
   </svg>
 </menu-close-anim-icon>
@@ -24,6 +24,8 @@
 
   class MenuCloseAnimIcon extends HTMLElement {
     status: 0 | 1;
+    duration: number;
+    initialized: boolean;
     tweenTop: gsap.core.Tween;
     tweenMid: gsap.core.Tween;
     tweenBottom: gsap.core.Tween;
@@ -33,19 +35,23 @@
 
       this.status = 0;
 
-      this.tweenTop = gsap.to("#line-t", {
+      this.duration = 0.5;
+
+      this.initialized = true;
+
+      this.tweenTop = gsap.to(this.querySelector(".line-t"), {
         attr: { "stroke-dashoffset": -18 },
-        duration: 0.5,
+        duration: this.duration,
       }).pause();
 
-      this.tweenMid = gsap.to("#line-m", {
+      this.tweenMid = gsap.to(this.querySelector(".line-m"), {
         attr: { "stroke-dashoffset": -14 },
-        duration: 0.5,
+        duration: this.duration,
       }).pause();
 
-      this.tweenBottom = gsap.to("#line-b", {
+      this.tweenBottom = gsap.to(this.querySelector(".line-b"), {
         attr: { "stroke-dashoffset": -9 },
-        duration: 0.5,
+        duration: this.duration,
       }).pause();
 
       mo.observe(this, { attributes: true });
@@ -64,10 +70,17 @@
     }
 
     play () {
+      if (this.initialized) {
+        this.tweenTop.play();
+        this.tweenMid.play();
+        this.tweenBottom.play();
+      } else {
+        this.tweenTop.progress(1);
+        this.tweenMid.progress(1);
+        this.tweenBottom.progress(1);
+        this.initialized = true;
+      }
       this.status = 1;
-      this.tweenTop.play();
-      this.tweenMid.play();
-      this.tweenBottom.play();
     }
 
     reverse() {

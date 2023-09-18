@@ -8,6 +8,7 @@ import MenuCloseAnimIcon from "./icons/MenuCloseAnimIcon.astro"
 import DarkThemeIcon from "./icons/themeDark.astro"
 import LightThemeIcon from "./icons/themeLight.astro"
 import SystemThemeIcon from "./icons/themeSystem.astro"
+import CustomThemeAnim from "./CustomThemeAnim.astro"
 
 const { pathname } = Astro.url
 ---
@@ -69,11 +70,10 @@ const { pathname } = Astro.url
 
 <script>
   import gsap from "gsap";
+
   const desktopThemeBlock = document.querySelector("#desktop-theme--block") as HTMLDivElement;
   const mobileThemeBlock = document.querySelector("#mobile-theme--block") as HTMLDivElement;
   const mobileMenuPanel = document.querySelector("#mobile-menu--panel");
-  
-  const theme = (window.localStorage.getItem("theme") || "auto") as "auto" | "dark" | "light";
 
   let mobileMenuLinkTween = gsap.to(".mobile-menu-link", {
     x: 0,
@@ -134,14 +134,21 @@ const { pathname } = Astro.url
     window.localStorage.setItem("theme", theme);
   }
 
-  switchTheme(theme);
+  const initTheme = () => {
+    const theme = (window.localStorage.getItem("theme") || "auto") as "auto" | "dark" | "light";
+    switchTheme(theme);
+  }
 
-  document.querySelector("#mobile-menu--btn")?.addEventListener("click", toggleMobileMenu);
+  document.addEventListener("DOMContentLoaded", initTheme);
+  document.addEventListener("astro:after-swap", initTheme);
 
-  document.querySelector("#desktop-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
-  document.querySelector("#desktop-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
-  document.querySelector("#desktop-theme-light--btn")?.addEventListener("click", () => switchTheme("light"));
-  document.querySelector("#mobile-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
-  document.querySelector("#mobile-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
-  document.querySelector("#mobile-theme-light--btn")?.addEventListener("click", () => switchTheme("light"));
+  document.addEventListener("astro:page-load", () => {
+    document.querySelector("#mobile-menu--btn")?.addEventListener("click", toggleMobileMenu);
+    document.querySelector("#desktop-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
+    document.querySelector("#desktop-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
+    document.querySelector("#desktop-theme-light--btn")?.addEventListener("click", () => switchTheme("light"));
+    document.querySelector("#mobile-theme-auto--btn")?.addEventListener("click", () => switchTheme("auto"));
+    document.querySelector("#mobile-theme-dark--btn")?.addEventListener("click", () => switchTheme("dark"));
+    document.querySelector("#mobile-theme-light--btn")?.addEventListener("click", () => switchTheme("light"));
+  });
 </script>

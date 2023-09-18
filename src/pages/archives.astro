@@ -18,7 +18,9 @@ const posts = (await getSortedPosts());
 						<div class="desktop:block hidden"><Datetime datetime={post.data.publishDate} /></div>
 						<div class="mobile:block hidden"><Datetime simple={true} datetime={post.data.publishDate} /></div>
 					</td>
-					<td class="px-4 py-2"><a class="block layout-a break-all break-words" href={`/blog/${generatePermalink(post.data.publishDate)}`}>{post.data.title}</a></td>
+					<td class="px-4 py-2">
+						<a class="block layout-a break-all break-words" href={`/blog/${generatePermalink(post.data.publishDate)}`} transition:name={`posttitle-${generatePermalink(post.data.publishDate)}`}>{post.data.title}</a>
+					</td>
 				</tr>
 			))}
 		</tbody>
