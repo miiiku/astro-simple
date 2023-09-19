@@ -5,8 +5,6 @@ import LogoIcon from "./icons/logo.astro"
 import SearchIcon from "./icons/search.astro"
 import MenuCloseAnimIcon from "./icons/MenuCloseAnimIcon.astro"
 
-import DarkThemeIcon from "./icons/themeDark.astro"
-import LightThemeIcon from "./icons/themeLight.astro"
 import SystemThemeIcon from "./icons/themeSystem.astro"
 import CustomThemeAnim from "./CustomThemeAnim.astro"
 
@@ -63,47 +61,59 @@ const { pathname } = Astro.url
 </style>
 
 <script>
-  // todo 切换页面后，移动端菜单无法正常工作，系统主题按钮点击无法正常播放切换动画
   import gsap from "gsap";
-  const mobileMenuPanel = document.querySelector("#mobile-menu--panel");
-  const desktopThemeBtn: any = document.querySelector("#desktop-theme--btn");
-  const mobileThemeBtn: any = document.querySelector("#mobile-theme--btn");
+  
+  let desktopThemeBtn:any = undefined;
+  let mobileThemeBtn:any = undefined;
+  let mobileMenuPanel:any = undefined;
 
-  let mobileMenuLinkTween = gsap.to(".mobile-menu-link", {
-    x: 0,
-    opacity: 1,
-    duration: 0.3,
-    stagger: 0.2,
-  }).pause();
-
-  let mobileMenuBtnTween = gsap.to(".mobile-menu--btn", {
-    scale: 1,
-    opacity: 1,
-    duration: 0.3,
-    stagger: 0.2,
-  }).pause();
+  let mobileMenuLinkTween:gsap.core.Tween | null = null;
+  let mobileMenuBtnTween:gsap.core.Tween | null = null;
 
   const toggleMobileMenu = () => {
-    console.log("----")
-    mobileMenuPanel?.classList.toggle("open");
-    if (mobileMenuPanel?.classList.contains("open")) {
-      mobileMenuLinkTween.restart();
-      mobileMenuBtnTween.restart();
-      document.querySelector("[key=mobile-menu--icon]")?.setAttribute("active", "");
-    } else {
-      document.querySelector("[key=mobile-menu--icon]")?.removeAttribute("active");
+    if (mobileMenuPanel) {
+      mobileMenuPanel.classList.toggle("open");
+      if (mobileMenuPanel.classList.contains("open")) {
+        /** open */
+        mobileMenuLinkTween && mobileMenuLinkTween.restart();
+        mobileMenuBtnTween && mobileMenuBtnTween.restart();
+        document.querySelector("[key=mobile-menu--icon]")?.setAttribute("active", "");
+      } else {
+        /** close */
+        document.querySelector("[key=mobile-menu--icon]")?.removeAttribute("active");
+      }
     }
   }
 
   const clearTheme = () => {
-    desktopThemeBtn && desktopThemeBtn.clearTheme();
-    mobileThemeBtn && mobileThemeBtn.clearTheme();
+    desktopThemeBtn?.clearTheme();
+    mobileThemeBtn?.clearTheme();
   }
 
   document.addEventListener("astro:page-load", () => {
-    /** 移动端切换菜单 */
+    /** 重新获取DOM元素 */
+    desktopThemeBtn = document.querySelector("#desktop-theme--btn") as any;
+    mobileThemeBtn = document.querySelector("#mobile-theme--btn") as any;
+    mobileMenuPanel = document.querySelector("#mobile-menu--panel");
+    
+    /** 重新绑定动画 */
+    mobileMenuLinkTween = gsap.to(".mobile-menu-link", {
+      x: 0,
+      opacity: 1,
+      duration: 0.3,
+      stagger: 0.2,
+    }).pause();
+
+    mobileMenuBtnTween = gsap.to(".mobile-menu--btn", {
+      scale: 1,
+      opacity: 1,
+      duration: 0.3,
+      stagger: 0.2,
+    }).pause();
+
+    /** 重新绑定移动端切换菜单事件 */
     document.querySelector("#mobile-menu--btn")?.addEventListener("click", toggleMobileMenu);
-    /** 选中系统主题后清空主题按钮当前选中状态 */
+    /** 重新绑定选中系统主题后清空主题按钮当前选中状态 */
     document.querySelector("#desktop-theme-auto--btn")?.addEventListener("click", clearTheme)
     document.querySelector("#mobile-theme-auto--btn")?.addEventListener("click", clearTheme)
   });

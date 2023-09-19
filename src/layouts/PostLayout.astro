@@ -10,6 +10,8 @@ import Datetime from "@/components/Datetime.astro";
 import CalendarIcon from "@/components/icons/calendar.astro";
 import { generatePermalink } from "@/utils";
 
+import "@styles/markdown.css";
+
 const { post } = Astro.props;
 
 const { title, keywords, description, tags, publishDate } = post.data;

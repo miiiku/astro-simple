@@ -4,10 +4,12 @@ interface Props {
   keywords?: Array<string>
   description?: string
 }
+
 import { LOCALE } from "@/consts";
 import BaseHead from "@/components/Head.astro"
 import BaseHeader from "@/components/Header.astro"
 import BaseFooter from "@/components/Footer.astro"
+
 import "@styles/style.css"
 
 const { title, keywords, description } = Astro.props;

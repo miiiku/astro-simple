@@ -33,10 +33,10 @@
   }
 
   .theme-text-hover {
-    @apply text-[var(--theme-text-hover)];
+    color: var(--theme-text-hover)
   }
 
   .theme-border {
-    @apply border-[var(--theme-border)];
+    border-color: var(--theme-border)
   }
 }

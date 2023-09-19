@@ -7,8 +7,12 @@ const { mode = "desktop" } = Astro.props;
 
 <custom-theme-anim { ...{ ...Astro.props } }>
   <div class="theme-block w-full h-full" data-mode={ mode }>
-    <button class="theme-dark theme-btn" title="dark theme"><DarkThemeIcon width="100%" height="100%" /></button>
-    <button class="theme-light theme-btn" title="light theme"><LightThemeIcon width="100%" height="100%" /></button>
+    <button class=`theme-dark w-full h-full p-2 rounded-md border ${ mode === "mobile" ? 'theme-border' : 'border-transparent hover:theme-border' } hover:theme-text-hover active:bg-zinc-100` title="dark theme">
+      <DarkThemeIcon width="100%" height="100%" />
+    </button>
+    <button class=`theme-light w-full h-full p-2 rounded-md border ${ mode === "mobile" ? 'theme-border' : 'border-transparent hover:theme-border' } hover:theme-text-hover active:bg-zinc-100` title="light theme">
+      <LightThemeIcon width="100%" height="100%" />
+    </button>
   </div>
 </custom-theme-anim>
 
@@ -107,7 +111,6 @@ const { mode = "desktop" } = Astro.props;
         this.initialized = true;
       }
 
-      this.theme = theme;
       this.setAttribute("theme", theme);
       window.localStorage.setItem("theme", theme);
     }
@@ -119,15 +122,3 @@ const { mode = "desktop" } = Astro.props;
 
   customElements.define("custom-theme-anim", CustomThemeAnim);
 </script>
-
-<style>
-  .theme-block[data-mode="mobile"] :where(.theme-btn) {
-    @apply theme-border;
-  }
-  .theme-block[data-mode="desktop"] :where(.theme-btn) {
-    @apply border-transparent hover:theme-border;
-  }
-  .theme-btn {
-    @apply w-full h-full p-2 rounded-md border hover:theme-text-hover active:bg-zinc-100;
-  }
-</style>
