@@ -1,3 +1,4 @@
+import yaml from '@rollup/plugin-yaml';
 import tailwind from "@astrojs/tailwind";
 import remarkEmoji from "remark-emoji";
 import { defineConfig } from "astro/config";
@@ -14,5 +15,8 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkEmoji],
+  },
+  vite: {
+    plugins: [yaml()],
   },
 });

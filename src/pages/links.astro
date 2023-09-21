@@ -1,16 +1,13 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Overview from "@/components/Overview.astro";
-import { getEntry } from "astro:content";
-
-const linkFile = await getEntry("link", "links")
-const linkList = linkFile?.data || [];
+import links from "../links/links.yml";
 ---
 
 <BaseLayout title="友联" keywords={["link", "友联"]}>
-	<Overview title="links" describe={`共计#{${linkList.length}}条link`} />
+	<Overview title="links" describe={`共计#{${links.length}}条link`} />
 	<ul>
-		{linkList && linkList.length && linkList.map((link) => {
+		{links && links.length && links.map((link:any) => {
 			return <li>{link.name}</li>
 		})}
 	</ul>
